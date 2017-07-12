@@ -18,7 +18,7 @@ var template = {
 		var html = tpl.innerHTML;
 
 		// 模版字符串按行分隔
-		var tplArrs = html.split('\n');
+		var tplArrs = this.isMac() ? html.split('\n') : html.split('\r\n');
 
 		for (var index = 0; index < tplArrs.length; ++index) {
 			// 去掉前后多余的空格
@@ -182,6 +182,13 @@ var template = {
 
 		// 添加到网页上，执行该脚本
 		document.body.appendChild(script);
+	},
 
+	/**
+	 * 简单判断是否是mac还是Windows
+	 */
+	isMac: function() {
+		var reg = /Mac/g;
+		return reg.test(navigator.userAgent);
 	}
 }
