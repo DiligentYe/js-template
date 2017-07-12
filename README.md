@@ -30,7 +30,7 @@
             </ul>
         </script>
 
-     3. 调用complileTpl：传入模版所在的script标签的id，将模版中的字符串解析成可执行的字符串（可被eval函数执行）
+     3. 调用compileTpl：传入模版所在的script标签的id，将模版中的字符串解析成可执行的字符串（可被eval函数执行）
         如：
         template.complileTpl('test_template');
 

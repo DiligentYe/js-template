@@ -10,7 +10,7 @@ var template = {
 	 * 将模版中的字符串解析为可执行的js语句
 	 * @param  {string} tpl 模版字符串
 	 */
-	complileTpl: function(id) {
+	compileTpl: function(id) {
 		// 模版文件
 		var tpl = document.getElementById(id);
 
@@ -24,7 +24,7 @@ var template = {
 			// 去掉前后多余的空格
 			var item = this._handlePadding(tplArrs[index]);
 			// 处理字符串
-			this._handleStr(item);	
+			this._handleStr(item);
 		}
 
 		return template;
@@ -38,7 +38,7 @@ var template = {
 	executeTpl: function(id, data) {
 		// 获取添加的根节点
 		var root = document.getElementById(id);
-		
+
 		this._replaceEval(this.jsStr);
 		console.log(globalStr);
 		root.innerHTML = globalStr;
@@ -59,11 +59,11 @@ var template = {
 		// {{ 或者 }} 的位置
 		var start = 0;
 		var end = 0;
-		
+
 		// 是否将该字符串根据规则切分为对应的字符串数据
-		while(!isEnd) {
+		while (!isEnd) {
 			end = str.indexOf('{{', start);
-			if(end != -1) {
+			if (end != -1) {
 				// 是否存在{{，如果存在，将{{之前的字符串push字符串数组，并将{{}}包含的字符串（包括{{}}）也push进入数组，继续处理
 				strArr.push(str.slice(start, end));
 				start = end;
@@ -84,16 +84,16 @@ var template = {
 	 * 字符串数组处理函数：将传入的字符串数组，根据相应的规则进行处理
 	 * @param  {array} arr 需要处理的字符串数组
 	 */
-	_handleArr: function (arr) {
+	_handleArr: function(arr) {
 		for (var i = 0; i < arr.length; ++i) {
 
 			var str = arr[i];
 			// {{在字符串中的位置
 			var pos = str.indexOf('{{');
 
-			if(pos == -1) {
+			if (pos == -1) {
 				// 字符串中不存在{{,直接拼接
-				if(str != '') {
+				if (str != '') {
 					this.jsStr += "globalStr +='" + str + "';";
 				}
 			} else {
@@ -101,11 +101,11 @@ var template = {
 				// 去掉{{}}
 				str = str.replace(/{{|}}/g, '');
 				// 判断是不是if语句或者for语句
-				if(str.indexOf('{') != -1 || str.indexOf('}') != -1){
+				if (str.indexOf('{') != -1 || str.indexOf('}') != -1) {
 					this.jsStr += str;
-				} 
+				}
 				// 判断是否是三目运算符
-				else if(str.indexOf('?') != -1 || str.indexOf(':') != -1){
+				else if (str.indexOf('?') != -1 || str.indexOf(':') != -1) {
 					// 处理三目运算符
 					this._handleThreeOpt(str);
 					this.jsStr += ";";
@@ -123,7 +123,7 @@ var template = {
 	 * 三目远算符字符串处理函数：将传入的三目远算符字符串，根据相应的规则进行处理
 	 * @param  {string} str 需要处理的三目远算符字符串
 	 */
-	_handleThreeOpt: function (str) {
+	_handleThreeOpt: function(str) {
 		// 问号位置
 		var qMarkPos = str.indexOf('?');
 		this.jsStr += str.slice(0, qMarkPos + 1);
@@ -132,7 +132,7 @@ var template = {
 		var otherQMarkerPos = str.indexOf('?', qMarkPos + 1);
 		// 第一个冒号的位置
 		var colonPos = str.indexOf(':', qMarkPos + 1);
-		if(otherQMarkerPos == -1) {
+		if (otherQMarkerPos == -1) {
 			// 没有二级判断
 			// 处理字符串
 			this.jsStr += "globalStr+='" + this._handlePadding(str.slice(qMarkPos + 1, colonPos));
@@ -141,7 +141,7 @@ var template = {
 			this.jsStr += "'";
 		} else {
 			// 判断二级判断在前在后
-			if(otherQMarkerPos < colonPos) {
+			if (otherQMarkerPos < colonPos) {
 				// 在前
 				var lastColonPos = str.lastIndexOf(':');
 				this._handleThreeOpt(str.slice(qMarkPos + 1, lastColonPos));
@@ -169,7 +169,7 @@ var template = {
 	 * 取代eval函数
 	 * @param  {string} str 需要执行的字符串
 	 */
-	_replaceEval: function (str) {
+	_replaceEval: function(str) {
 		// 创建一个script标签，并指定id，便于执行后，删除该脚本标签
 		var script = document.createElement('script');
 		script.id = '$replaceEval';
@@ -185,24 +185,3 @@ var template = {
 
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
